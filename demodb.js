@@ -34,6 +34,6 @@ export const quotes = [
     },
     {
         name:"I am another quote",
-        by:"23131"
+        by:"4232"
     }
 ] 

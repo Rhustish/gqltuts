@@ -1,4 +1,3 @@
-import {quotes,users} from "./demodb.js"
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
@@ -10,13 +9,13 @@ const Quote = mongoose.model("Quote")
 const resolvers = {
     Query:{
         users:async()=>await User.find({}),
-        quotes:async()=>await Quote.find({}),
+        quotes:async()=>await Quote.find({}).populate("by","_id firstName"),
         user:async(_,{_id})=>await User.findById(_id),
         iquote:async(_,{by})=>await Quote.find({by})
 
     },
     User:{
-        quotes:(ur)=>quotes.filter(q=>q.by == ur._id)
+        quotes:async(ur)=> await Quote.find({by:ur._id})
     },
     Mutation:{
         newUser:async (_,{userNew})=>{

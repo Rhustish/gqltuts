@@ -1,10 +1,9 @@
 import { ApolloServer } from "@apollo/server"
 import { startStandaloneServer } from '@apollo/server/standalone'
-import  jwt  from "jsonwebtoken"
-import { jwts } from "./config.js"
 import typeDefs from "./schemagql.js"
 import mongoose from "mongoose"
 import { mongourl } from "./config.js"
+import { context } from "./context.js"
 
 
 mongoose.connect(mongourl, {
@@ -24,16 +23,7 @@ const server = new ApolloServer({
 })
 
 const { url } = await startStandaloneServer(server, {
-  context: ({ req }) => {
-    if(req.method=="POST"){
-    console.log("Ping");
-    const { authorization } = req.headers
-    if (authorization) {
-      const { userID } = jwt.verify(authorization, jwts)
-      console.log(`userID`);
-      return { userID }
-    }}
-  },
+  context,
   introspection:true,
   listen: { port: 4000 },
 });

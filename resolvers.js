@@ -2,16 +2,17 @@ import {quotes,users} from "./demodb.js"
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
-import { jwts } from "./config.js";
+import  {jwts}  from "./config.js";
 
 const User = mongoose.model("User")
+const Quote = mongoose.model("Quote")
 
 const resolvers = {
     Query:{
-        users:()=>users,
-        quotes:()=>quotes,
-        user:(_,{_id})=>users.find(user=>user._id == _id),
-        iquote:(_,{by})=>quotes.filter(quote=>quote.by == by)
+        users:async()=>await User.find({}),
+        quotes:async()=>await Quote.find({}),
+        user:async(_,{_id})=>await User.findById(_id),
+        iquote:async(_,{by})=>await Quote.find({by})
 
     },
     User:{
@@ -38,7 +39,15 @@ const resolvers = {
             const token = jwt.sign({userID:user._id},jwts)
             return {token}
 
-        }
+        },
+        createQuote: async(_,{name},{userID})=>{
+            if(!userID) throw new Error("3-2")
+            const nq = await new Quote({
+                name,
+                by:userID
+            })
+            return await nq.save()
+        }   
     }
 }
 

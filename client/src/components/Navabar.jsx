@@ -5,10 +5,10 @@ export default function Navabar() {
   return (
     <nav>
       <div classname="nav-wrapper">
-        <Link to="/" class="brand-logo">
-          Logo
+        <Link to="/" className="brand-logo">
+          Quotes
         </Link>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <ul id="nav-mobile" className="right hide-on-med-and-down">
           <li>
             <Link to="/login">Login</Link>
           </li>

@@ -1,14 +1,15 @@
-import './App.css'
-import CreateQuote from './components/CreateQuote'
-import Login from './components/Login'
-import Profile from './components/Profile'
-import Signup from './components/Signup'
+import Routes from './components/Routes'
+import Navabar from './components/Navabar'
+import { useRoutes } from 'react-router-dom'
+
 function App() {
 
+  const router = useRoutes(Routes)
 
   return (
     <>
-      <CreateQuote/>
+    <Navabar />
+    {router}
     </>
   )
 }
